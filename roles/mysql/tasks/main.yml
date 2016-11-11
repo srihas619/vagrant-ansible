@@ -1,0 +1,18 @@
+---
+- name: update cache
+  apt: update_cache=yes
+
+- name: set MySQL root pass
+  debconf: name='mysql-server' question='mysql-server/root_pass' value='{{MySQL_root_pass | quote}}' vtype='password'
+
+- name: confirm MySQL root pass
+  debconf: name='mysql-server' question='mysql-server/root_pass_repeat' value='{{MySQL_root_pass | quote}}' vtype='password'
+
+- name: install mysql-server
+  apt: name={{ item }} state=present
+  with_items:
+    - mysql-server
+    - libapache2-mod-auth-mysql
+    - php5-mysql
+  notify:
+    - mysql-server installed

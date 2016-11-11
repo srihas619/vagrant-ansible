@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  vars:
+    MySQL_root_pass: "1"
+  roles:
+    - vim
+    - apache
+    - mysql
+    - php5
+  handlers:
+    - name: mysql-server installed
+      action: service name=apache2 state=restarted
+    - name: php5 installed
+      action: service name=apache2 state=restarted
